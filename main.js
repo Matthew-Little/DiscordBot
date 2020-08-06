@@ -30,6 +30,8 @@ client.on("message", (message)=>{
         client.commands.get("ping").execute(message, arguments);
     } else if(command === "roll") {
         client.commands.get("roll").execute(message, arguments);
+    } else {
+        message.channel.send("Sorry, I didnt quite catch that!");
     }
 });
 
