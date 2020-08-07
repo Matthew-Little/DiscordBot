@@ -3,18 +3,20 @@ const { prefix } = require("../config.json");
 module.exports = {
     name: "help",
 
+    //no args because this command can be run with or without arguments
+
+    usage: "<Command name>",
+
     description: 'List all of my commands or info about a specific command.',
-    
-    usage: "[Command name]",
 
     execute(message, arguments) {
         const data = [];
-        const { commands } = message.client;
+        const { commands }  = message.client;
 
         if(!arguments.length) {
             data.push("Here\'s a list of all my commands:");
             data.push(commands.map(command => command.name).join(", "));
-            data.push(`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`);
+            data.push(`\nYou can send \`${prefix}help <command name>\` to get info on a specific command!`);
 
             return message.author.send(data, {split: true})
             .then(()=> {
@@ -35,8 +37,10 @@ module.exports = {
         }
 
         data.push(`**Name:** ${command.name}`);
-        if (command.description) data.push(`**Description:** ${command.description}`);
-        if (command.usage) data.push(`**Usage:** ${prefix}${command.name} ${command.usage}`);
+        if (command.description) 
+            data.push(`**Description:** ${command.description}`);
+        if (command.usage) 
+            data.push(`**Usage:** ${prefix}${command.name} ${command.usage}`);
 
         message.channel.send(data, { split: true });
 

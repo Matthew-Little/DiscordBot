@@ -10,12 +10,8 @@ module.exports = {
     execute(message, arguments){
         if(!validNumberOfArguments(arguments)){
             let error = "It seems like you sent me the wrong number of Arguments!\n"
-            error += "This command can be used in any of the following ways:\n";
-            error += "/roll dy\n"
-            error += "/roll xdy\n"
-            error += "/roll xdy + z\n"
-            error += "/roll xdy - z\n"
-            error += "where x is the number of dice to roll, y is the type of die and z is the modifier\n";
+            error += "This command can be used in the following way:\n";
+            error += this.usage;
             message.channel.send(error);
             
         }  else {
