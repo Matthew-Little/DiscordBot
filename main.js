@@ -19,9 +19,8 @@ client.once("ready", ()=>{
 //Command Handler
 client.on("message", (message)=>{
 
-    if(!message.content.startsWith(prefix) || message.author.bot) {
+    if(!message.content.startsWith(prefix) || message.author.bot)
         return;
-    }
 
     const arguments = message.content.slice(prefix.length).split(' ');
     const commandName = arguments.shift().toLowerCase()
@@ -35,11 +34,11 @@ client.on("message", (message)=>{
 
     //Argument Checker
     if(command.args && !arguments.length) {
-
         let reply = `You didn't provide any arguments, ${message.author}!`;
+        
         if(command.usage) 
             reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
-        
+
         return message.channel.send(reply);
     }
 
