@@ -32,6 +32,11 @@ client.on("message", (message)=>{
 
     const command = client.commands.get(commandName);
 
+    //Ensures Commands meant for the server are not executed in DM's
+    if(command.guildOnly && message.channel.type === "dm") {
+        return message.reply("I can't execute that command inside DMs!");
+    }
+
     //Argument Checker
     if(command.args && !arguments.length) {
         let reply = `You didn't provide any arguments, ${message.author}!`;

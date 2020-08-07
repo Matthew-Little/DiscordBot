@@ -7,8 +7,8 @@ module.exports = {
 
     description: "dice rolling command",
 
-    execute(message, arguments){
-        if(!validNumberOfArguments(arguments)){
+    execute(message, arguments)  {
+        if(!validNumberOfArguments(arguments)) {
             let error = "It seems like you sent me the wrong number of Arguments!\n"
             error += "This command can be used in the following way:\n";
             error += this.usage;
@@ -33,8 +33,9 @@ module.exports = {
                     message.channel.send("Sorry I did not recognize the second argument, I am looking for a + or -");
                 }
             }
+            //Ensures only numbers are passed to the rollDice function
             if(isNaN(sizeOfDie) || isNaN(numberOfDice) || isNaN(modifier)){
-                message.channel.send("Sorry it appears that you did not input a number where I expected one!")
+                message.channel.send("Sorry it appears that you did not input a number where I expected one!");
             } else {
                 let result = rollDice(sizeOfDie, numberOfDice, modifier);
                 let resultString = generateResultString(result, modifier);
@@ -53,6 +54,7 @@ function validNumberOfArguments(arguments) {
     return isValid;
 }
 
+//Parses the first argument to ensure that whether the user enters d8 or 1d8 the command functions as expected
 function parseFirstArgument(argument) {
     const tokens = [];
 
@@ -67,6 +69,7 @@ function parseFirstArgument(argument) {
     return tokens;
 }
 
+//random number generator fills an array with the result of each "Roll" and the total result including any modifiers
 function rollDice(sizeOfDie, numberOfDice, modifier) {
     let total = modifier;
     let result = [];
@@ -78,11 +81,13 @@ function rollDice(sizeOfDie, numberOfDice, modifier) {
     return result;
 }
 
+//recieves the result array and formats it into a string that can be put into the channel
 function generateResultString(result, modifier) {
-    let lastResult = result.length - 2;
+    let lastResult = result.length - 2; //-2 because we pop the total off the end
 
     let resultString = `Your result is: ${result.pop()} (`;
     for(let i = 0; i < result.length; ++i) {
+
         resultString += `${result[i]}`;
         if(i != lastResult) {
             resultString += " + ";
