@@ -1,6 +1,12 @@
 module.exports = {
     name: "roll",
+
+    args: true,
+
+    usage: "<Number of Dice>d<Die Size> <+/-> <Modifier>",
+
     description: "dice rolling command",
+
     execute(message, arguments){
         if(!validNumberOfArguments(arguments)){
             let error = "It seems like you sent me the wrong number of Arguments!\n"
@@ -54,7 +60,7 @@ function validNumberOfArguments(arguments) {
 function parseFirstArgument(argument) {
     const tokens = [];
 
-    if(arguments[0].charAt(0) === 'd') {
+    if(arguments[0].charAt(0).toLowerCase() === 'd') {
         tokens.push(1);
         tokens.push(parseInt(argument.charAt(1)));
     } else {

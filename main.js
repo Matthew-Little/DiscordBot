@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const prefix = '/';
+const { prefix, token } = require("./config.json")
+
 const fs = require("fs");
 
 client.commands = new Discord.Collection();
@@ -11,7 +12,6 @@ for(const file of commandFiles){
 
     client.commands.set(command.name, command);
 }
-
 
 client.once("ready", ()=>{
     console.log("DiceBot is online!");
@@ -24,15 +24,30 @@ client.on("message", (message)=>{
     }
 
     const arguments = message.content.slice(prefix.length).split(' ');
-    const command = arguments.shift().toLowerCase()
+    const commandName = arguments.shift().toLowerCase()
 
-    if(command === "ping") {
-        client.commands.get("ping").execute(message, arguments);
-    } else if(command === "roll") {
-        client.commands.get("roll").execute(message, arguments);
-    } else {
-        message.channel.send("Sorry, I didnt quite catch that!");
-    }
+  if(!client.commands.has(commandName)) {
+      return;
+  }
+
+  const command = client.commands.get(commandName);
+
+  if(command.args && !arguments.length) {
+      let reply = `You didn't provide any arguments, ${message.author}!`;
+
+      if(command.usage) {
+          reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
+      }
+
+    return message.channel.send(reply);
+  }
+
+  try {
+      command.execute(message, arguments);
+  } catch(error) {
+        console.error(error);
+        message.reply("Sorry there was an error trying to execute that command!");
+  }
 });
 
-client.login("NzQwNjUzMjEyOTE0NDE3Nzc0.XysJDg.AOvugT88dPekEmxu9pVcxXFdEGo");
+client.login(token);
