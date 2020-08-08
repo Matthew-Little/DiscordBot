@@ -35,7 +35,7 @@ module.exports = {
         const command = commands.get(name);
 
         if(!command) 
-            return message.reply('that\'s not a valid command!');
+            return message.reply("that's not a valid command!");
         
         //Formatting for the /help <command name> return
         data.push(`**Name:** ${command.name}`);

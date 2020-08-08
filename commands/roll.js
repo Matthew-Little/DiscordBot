@@ -3,86 +3,128 @@ module.exports = {
 
     args: true,
 
-    usage: "<Number of Dice>d<Die Size> <+/-> <Modifier>",
+    usage: "<Number of Dice>d<Die Size><+/-><Modifier>",
 
     description: "dice rolling command",
 
     execute(message, arguments)  {
-        if(!validNumberOfArguments(arguments)) {
-            let error = "It seems like you sent me the wrong number of Arguments!\n"
-            error += "This command can be used in the following way:\n";
-            error += this.usage;
-            message.channel.send(error);
-            
-        }  else {
-            let numberOfDice = 0;
-            let sizeOfDie = 0;
-            let modifier = 0;
+        
+        let numberOfDice = 0;
+        let sizeOfDie = 0;
+        let operation = '';
+        let modifier = 0;
 
-            const tokens = parseFirstArgument(arguments[0]);
-            numberOfDice = tokens[0];
-            sizeOfDie = tokens[1];
-
-            if(arguments.length > 1) {
-
-                if(arguments[1] === '+') {
-                    modifier += parseInt(arguments[2]);
-                } else if(arguments[1] === '-') {
-                    modifier -= parseInt(arguments[2]);
+        let tokens = [];
+        while(arguments.length > 0) {
+            try {
+                tokens = parseArgument(arguments.shift());
+                numberOfDice = tokens[0];
+                sizeOfDie = tokens[1];
+                operation = tokens[2];
+                modifier = tokens[3];
+                    //Ensures only numbers are passed to the rollDice function
+                if(!validTokens(numberOfDice, sizeOfDie, modifier)){
+                    message.reply("You put a letter where I expected a number! Please try again.");
                 } else {
-                    message.channel.send("Sorry I did not recognize the second argument, I am looking for a + or -");
+                    let result = rollDice(numberOfDice, sizeOfDie, operation, modifier);
+                    let resultString = generateResultString(result, operation, modifier);
+                    message.channel.send(resultString);
                 }
+            } catch(error) {
+                console.error(error);
+                message.reply(error)
             }
-            //Ensures only numbers are passed to the rollDice function
-            if(isNaN(sizeOfDie) || isNaN(numberOfDice) || isNaN(modifier)){
-                message.channel.send("Sorry it appears that you did not input a number where I expected one!");
-            } else {
-                let result = rollDice(sizeOfDie, numberOfDice, modifier);
-                let resultString = generateResultString(result, modifier);
-                message.channel.send(resultString);
-            }
-           
+        }   
+    }
+}
+
+
+
+function parseArgument(argument) {
+    let tokens = [];
+    let charLocation = 0;
+    let symbolLocation = 0;
+
+    if(isInvalidArgument(argument)) {
+        throw `${argument} is not a valid argument!`;
+    }
+
+    for(let i = 0; i < argument.length; ++i) {
+        if(argument.charAt(i) === 'd') {
+            charLocation = i;
+        } else if(isValidSymbol(argument.charAt(i))) {
+            symbolLocation = i;
         }
     }
-}
 
-function validNumberOfArguments(arguments) {
-    let isValid = false;
-    if(arguments.length === 1 || arguments.length === 3) {
-        isValid = true;
-    }
-    return isValid;
-}
-
-//Parses the first argument to ensure that whether the user enters d8 or 1d8 the command functions as expected
-function parseFirstArgument(argument) {
-    const tokens = [];
-
-    if(arguments[0].charAt(0).toLowerCase() === 'd') {
+    if(argument.startsWith('d')) {
         tokens.push(1);
-        tokens.push(parseInt(argument.charAt(1)));
     } else {
-        tokens.push(parseInt(argument.charAt(0)));
-        tokens.push(parseInt(argument.charAt(2)));
+        tokens.push(parseInt(argument.substring(0, charLocation)));
+    }
+        
+    if(symbolLocation !== 0 ) {
+        tokens.push(parseInt(argument.substring(charLocation + 1, symbolLocation)))
+        tokens.push(argument.charAt(symbolLocation));
+        tokens.push(parseInt(argument.substring(symbolLocation + 1)));
+    } else {
+        tokens.push(parseInt(argument.substring(charLocation + 1)));
+        tokens.push("");
+        tokens.push(0);
     }
 
     return tokens;
 }
 
-//random number generator fills an array with the result of each "Roll" and the total result including any modifiers
-function rollDice(sizeOfDie, numberOfDice, modifier) {
-    let total = modifier;
-    let result = [];
-    for(let i = 0; i < numberOfDice; ++i) {
-        result.push(Math.floor((Math.random() * sizeOfDie) + 1));
-        total += result[i];
+function isInvalidArgument(argument) {
+    let valid = false;
+    for(let i = 0; i < argument.length; ++i) {
+        if(argument.charAt(i) !== 'd' && isNaN(parseInt(argument.charAt(i))) && !isValidSymbol(argument.charAt(i))) {
+            valid = true;
+        }
     }
+
+    return valid;
+}
+
+function isValidSymbol(symbol) {
+    let isValid = false;
+
+    if(symbol === '+' || symbol === '-')
+        isValid = true;
+
+    return isValid;
+}
+
+function validTokens(numberOfDice, sizeOfDie, modifier) {
+    let valid = true;
+    if(isNaN(sizeOfDie) || isNaN(numberOfDice) || isNaN(modifier)) {
+        valid = false;
+    }
+    return valid;
+}
+//random number generator fills an array with the result of each "Roll" and the total result including any modifiers
+function rollDice(timesRolled, maximum, operation, modifier) {
+    const MINIMUM_RESULT = 1;
+    let total = 0;
+    let result = [];
+    for(let i = 0; i < timesRolled; ++i) {
+        result.push(Math.floor((Math.random() * maximum) + MINIMUM_RESULT)); //Math.floor(Math.random() * MAX + MIN) inclusive between min and max
+            total += result[i];
+    }
+
+    if(operation === '+') {
+        total += modifier;
+    } else if(operation === '-') {
+        total -=modifier;
+    }
+
     result.push(total);
     return result;
 }
 
 //recieves the result array and formats it into a string that can be put into the channel
-function generateResultString(result, modifier) {
+function generateResultString(result, operation, modifier) {
     let lastResult = result.length - 2; //-2 because we pop the total off the end
 
     let resultString = `Your result is: ${result.pop()} (`;
@@ -91,11 +133,15 @@ function generateResultString(result, modifier) {
         resultString += `${result[i]}`;
         if(i != lastResult) {
             resultString += " + ";
-        } else if(modifier != 0) {
+        } else if(modifier != 0 && operation === '+') {
             resultString += ` + ${modifier}`;
+        } else if(modifier != 0 && operation === '-') {
+            resultString += ` - ${modifier}`;
         }
     }
     resultString += ")";
 
     return resultString;
 }
+
+
