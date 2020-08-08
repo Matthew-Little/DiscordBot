@@ -44,7 +44,7 @@ function parseArgument(argument) {
     let tokens = [];
     let charLocation = 0;
     let symbolLocation = 0;
-
+    
     if(isInvalidArgument(argument)) {
         throw `${argument} is not a valid argument!`;
     }
@@ -78,10 +78,10 @@ function parseArgument(argument) {
 
 function isInvalidArgument(argument) {
     let valid = false;
-    for(let i = 0; i < argument.length; ++i) {
-        if(argument.charAt(i) !== 'd' && isNaN(parseInt(argument.charAt(i))) && !isValidSymbol(argument.charAt(i))) {
-            valid = true;
-        }
+    let regex = /(\d+|d{1})(\d+|d{1})\d*([\+\-]\d+)?/gi;
+    let compare = argument.match(regex);
+    if(compare === argument) {
+        valid = true;
     }
 
     return valid;
@@ -103,6 +103,7 @@ function validTokens(numberOfDice, sizeOfDie, modifier) {
     }
     return valid;
 }
+
 //random number generator fills an array with the result of each "Roll" and the total result including any modifiers
 function rollDice(timesRolled, maximum, operation, modifier) {
     const MINIMUM_RESULT = 1;
