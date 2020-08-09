@@ -77,14 +77,15 @@ function parseArgument(argument) {
 }
 
 function isInvalidArgument(argument) {
-    let valid = false;
+    let inValid = false;
     let regex = /(\d+|d{1})(\d+|d{1})\d*([\+\-]\d+)?/gi;
     let compare = argument.match(regex);
-    if(compare === argument) {
-        valid = true;
+    console.log(compare);
+    if(compare != argument) {
+        inValid = true;
     }
 
-    return valid;
+    return inValid;
 }
 
 function isValidSymbol(symbol) {
