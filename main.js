@@ -16,6 +16,15 @@ client.once("ready", ()=>{
     console.log("DiceBot is online!");
 });
 
+//Welcome message to new server members
+client.on("guildMemberAdd", (member)=>{
+    const channel = member.guild.channels.cache.find(ch => ch.name === "general");
+
+    if(!channel)
+        return;
+    channel.send(`Welcome to the server ${member}, feel free to type /help to see all the things I can do!`);
+});
+
 //Command Handler
 client.on("message", (message)=>{
 

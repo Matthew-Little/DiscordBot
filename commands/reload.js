@@ -3,7 +3,7 @@ module.exports = {
 
     args: true,
 
-    usage: "<Command name>",
+    usage: "[Command name]",
 
     description: "Reloads a command",
 

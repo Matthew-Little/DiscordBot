@@ -80,7 +80,6 @@ function isInvalidArgument(argument) {
     let inValid = false;
     let regex = /(\d+|d{1})(\d+|d{1})\d*([\+\-]\d+)?/gi;
     let compare = argument.match(regex);
-    console.log(compare);
     if(compare != argument) {
         inValid = true;
     }

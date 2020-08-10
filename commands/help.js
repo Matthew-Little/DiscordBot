@@ -5,7 +5,7 @@ module.exports = {
 
     //no args because this command can be run with or without arguments
 
-    usage: "<Command name>",
+    usage: "[Command name>]",
 
     description: "List all of my commands or info about a specific command.",
 
