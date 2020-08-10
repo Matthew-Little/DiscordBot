@@ -1,12 +1,11 @@
 module.exports = {
-
     name: "kick",
 
     args: true,
 
     usage: "[@user]",
 
-    description: "The kick command",
+    description: "This command kicks the tagged user",
 
     execute(message, arguments) {
        

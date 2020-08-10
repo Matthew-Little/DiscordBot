@@ -3,7 +3,7 @@ module.exports = {
 
     args: true,
 
-    usage: "<Number of Dice>d<Die Size><+/-><Modifier>",
+    usage: "[Number of Dice]d[Die Size][+/-][Modifier]",
 
     description: "dice rolling command",
 
