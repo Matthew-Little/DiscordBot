@@ -5,10 +5,12 @@ module.exports = {
 
     usage: "[@user] [length of mute]",
 
+    guildOnly: true,
+
     description: "This command mutes the tagged user",
 
     execute(message, arguments) {
-
+        
     }
 
 }

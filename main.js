@@ -35,7 +35,7 @@ client.on("message", (message)=>{
     const commandName = arguments.shift().toLowerCase()
   
     if(!client.commands.has(commandName)) {
-        message.channel.send("Sorry I can't find that command! \nTry using my /help command to see a list of all the commands I have available.")        
+        message.channel.send("Sorry I can't find that command! \nTry using my /help command to see a list of all the commands I have available.");        
         return;
     }
 

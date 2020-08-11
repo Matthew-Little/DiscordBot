@@ -5,10 +5,12 @@ module.exports = {
 
     usage: "[@user]",
 
+    guildOnly: true,
+
     description: "This command kicks the tagged user",
 
     execute(message, arguments) {
-       
+        //if the user issuing the command has the correct permissions
         if(message.member.roles.cache.has("742409416946614352")) {
             const user = message.mentions.users.first();
             //If there was a user mentioned 
@@ -30,7 +32,7 @@ module.exports = {
                 message.reply("You didn't mention the user to kick!");
             }
         } else {
-            message.reply("You don't have the proper permission to use this command!");
+            message.reply("You don't have the proper permissions to use this command!");
         }
     }
 }

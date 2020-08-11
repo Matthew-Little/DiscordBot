@@ -5,6 +5,8 @@ module.exports = {
 
     usage: "[@user]",
 
+    guildOnly: true,
+
     description: "unmutes the tagged user",
 
     execute(message, arguments) {
