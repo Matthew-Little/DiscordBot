@@ -10,7 +10,6 @@ module.exports = {
     description: "This command mutes the tagged user",
 
     execute(message, arguments) {
-        
     }
 
 }

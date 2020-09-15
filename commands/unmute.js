@@ -7,7 +7,7 @@ module.exports = {
 
     guildOnly: true,
 
-    description: "unmutes the tagged user",
+    description: "This command unmutes the tagged user",
 
     execute(message, arguments) {
         
