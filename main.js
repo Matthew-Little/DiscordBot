@@ -31,7 +31,7 @@ client.on("message", (message)=>{
     if(!message.content.startsWith(prefix) || message.author.bot)
         return;
 
-    const arguments = message.content.slice(prefix.length).split(' ');
+    const arguments = message.content.slice(prefix.length).trim().split(/ +/);
     const commandName = arguments.shift().toLowerCase()
   
     if(!client.commands.has(commandName)) {
@@ -62,6 +62,10 @@ client.on("message", (message)=>{
         console.error(error);
         message.reply("Sorry there was an error trying to execute that command!");
     }
+});
+
+process.on("unhandledRejection", error => {
+   console.error("Unhandled promise rejection: ", error); 
 });
 
 client.login(token);

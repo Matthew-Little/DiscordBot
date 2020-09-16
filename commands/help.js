@@ -3,9 +3,11 @@ const { prefix } = require("../config.json");
 module.exports = {
     name: "help",
 
-    //no args because this command can be run with or without arguments
+    args: false,
 
     usage: "[Command name>]",
+
+    guildOnly: false,
 
     description: "List all of my commands or info about a specific command.",
 

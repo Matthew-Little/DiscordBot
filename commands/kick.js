@@ -11,7 +11,7 @@ module.exports = {
 
     execute(message, arguments) {
         //if the user issuing the command has the correct permissions
-        if(message.member.roles.cache.has("742409416946614352")) {
+        if(message.member.hasPermission("KICK_MEMBERS")) {
             const user = message.mentions.users.first();
             //If there was a user mentioned 
             if(user) {
