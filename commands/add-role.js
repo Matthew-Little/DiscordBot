@@ -32,13 +32,13 @@ module.exports = {
                 if(member) {
                     member.roles.add(role)
                     .then(()=>{
-                        message.reply(`${user.tag} was added to ${role.name}`);
+                        message.reply(`${users[i].tag} was added to ${role.name} role`);
                     }).catch(error => {
-                        message.reply(`I was unable to add ${user.tag} to ${role.name}`);
+                        message.reply(`I was unable to add ${users[i].tag} to ${role.name} role`);
                         console.log(error);
                     })
                 } else {
-                    message.reply(`${user.tag} isn't in the guild!`);
+                    message.reply(`${users[i].tag} isn't in the guild!`);
                 }
             }
 

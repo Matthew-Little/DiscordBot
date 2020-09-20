@@ -32,13 +32,13 @@ module.exports = {
                 if(member) {
                     member.roles.remove(role)
                     .then(()=>{
-                        message.reply(`${user.tag} was removed from ${role.name}`);
+                        message.reply(`${users[i].tag} was removed from ${role.name}  role`);
                     }).catch(error => {
-                        message.reply(`I was unable to remove ${user.tag} from ${role.name}`);
+                        message.reply(`I was unable to remove ${users[i].tag} from ${role.name} role`);
                         console.log(error);
                     })
                 } else {
-                    message.reply(`${user.tag} isn't in the guild!`);
+                    message.reply(`${users[i].tag} isn't in the guild!`);
                 }
             }
 
