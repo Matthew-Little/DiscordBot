@@ -10,24 +10,32 @@ module.exports = {
     description: "This command unmutes the tagged user",
 
     execute(message, arguments) {
+
+        let users = [];
+        if(typeof(arguments[0] === typeof([]))) {
+            users = arguments.shift();
+        } else {
+            message.reply("No users were mentioned!");
+            return;
+        }
+
         if(message.member.hasPermission("MUTE_MEMBERS")) {
-            const user = message.mentions.users.first();
-            if(user) {
-                const member = message.guild.member(user);
+
+            for(let i = 0; i < users.length; ++i) {
+                let member = message.guild.member(users[i]);
                 if(member) {
-                    member.voice.setMute(false, "Reason for unmute")
-                    .then(() =>{
-                        message.reply(`${user.tag} has been unmuted`);
-                    }).catch(error =>{
-                        message.reply("I was unable to unmute the member!");
+                    member.voice.setMute(false, "")
+                    .then(()=>{
+                        message.reply(`${users[i].tag} has been unmuted`);
+                    }).catch(error => {
+                        message.reply(`I was unable to unmute ${users[i].tag}`);
                         console.log(error);
-                    })
+                    });
                 } else {
-                    message.reply("That user isn't in this guild!")
+                    message.reply(`${users[i].tag} is not a member of the guild!`)
                 }
-            } else {
-                message.reply("You didn't mention the user to mute!")
             }
+        
         } else {
             message.reply("You don't have the proper permissions to use this command!")
         }   

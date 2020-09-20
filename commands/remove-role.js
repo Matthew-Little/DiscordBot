@@ -11,32 +11,37 @@ module.exports = {
 
     execute(message, arguments) {
 
-        const role = message.guild.roles.cache.find(role => role.name === arguments[1]);
+        let users = [];
+        if(typeof(arguments[0] === typeof([]))) {
+            users = arguments.shift();
+        } else {
+            message.reply("No users were mentioned!");
+            return;
+        }
+
+        const role = message.guild.roles.cache.find(role => role.name === arguments[0]);
         if(!role) {
             message.reply("There is no role with that name!");
             return;
         }
-         //if the user issuing the command has the correct permissions
-         if(message.member.hasPermission("MANAGE_ROLES")) {
-            const user = message.mentions.users.first();
-            //If there was a user mentioned 
-            if(user) {
-                const member = message.guild.member(user);
-                //if that user is a member of the "guild"
+
+        if(message.member.hasPermission("MANAGE_ROLES")) {
+
+            for(let i = 0; i < users.length; ++i) {
+                let member = message.guild.member(users[i]);
                 if(member) {
                     member.roles.remove(role)
                     .then(()=>{
-                        message.reply(`${user.tag} role removed successfully.`);
-                    }).catch(error =>{
-                        message.reply(`I was unable to remove the members role!`);
+                        message.reply(`${user.tag} was removed from ${role.name}`);
+                    }).catch(error => {
+                        message.reply(`I was unable to remove ${user.tag} from ${role.name}`);
                         console.log(error);
-                    });
+                    })
                 } else {
-                    message.reply(`That user isn't in this guild!`);
+                    message.reply(`${user.tag} isn't in the guild!`);
                 }
-            } else {
-                message.reply("You didn't mention the user remove the role from to!");
             }
+
         } else {
             message.reply("You don't have the proper permissions to use this command!");
         }

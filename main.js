@@ -28,17 +28,22 @@ client.on("guildMemberAdd", (member)=>{
 //Command Handler
 client.on("message", (message)=>{
 
+    //if message did not start with the prefix or the message came from a bot, ignore the message
     if(!message.content.startsWith(prefix) || message.author.bot)
         return;
 
+    //slice message into individual "arguments"
     const arguments = message.content.slice(prefix.length).trim().split(/ +/);
+    //move the first argument containing the commandName from the array
     const commandName = arguments.shift().toLowerCase()
-  
+
+    //If the command does not exist
     if(!client.commands.has(commandName)) {
         message.channel.send("Sorry I can't find that command! \nTry using my /help command to see a list of all the commands I have available.");        
         return;
     }
 
+    //retrieve the command from the command collection
     const command = client.commands.get(commandName);
 
     //Ensures Commands meant for the server are not executed in DM's
@@ -46,6 +51,28 @@ client.on("message", (message)=>{
         return message.reply("I can't execute that command inside DMs!");
     }
 
+    //Mention Handler
+    let mentions = [];
+    let user;
+
+    for(let i = 0; i < arguments.length; ++i) {
+        //try to retrieve a user from the argument
+        user = getUserFromMention(arguments[i]);
+
+        //if the user is not null add it to the mentions array
+        if(user) {
+            mentions.push(user);
+        }
+    }
+    //For each mention shift the argument off the front
+    for(let i = 0; i < mentions.length; ++i) {
+        arguments.shift();
+    }
+    //Add array of mentions to the front of the arguments array
+    if(mentions.length > 0) {
+        arguments.unshift(mentions);
+    }
+    
     //Argument Checker
     if(command.args && !arguments.length) {
         let reply = `You didn't provide any arguments, ${message.author}!`;
@@ -69,3 +96,18 @@ process.on("unhandledRejection", error => {
 });
 
 client.login(token);
+
+
+function getUserFromMention(mention) {
+    
+    const matches = mention.match(/^<@!?(\d+)>$/);
+
+    //If supplied variable was not a mention, matches will be null instead of an array.
+    if(!matches) return;
+
+    //the first element in the matches array will be the entire mention, not just the ID,
+	// so use index 1.
+    const id = matches[1];
+
+    return client.users.cache.get(id);  
+}
