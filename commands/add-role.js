@@ -12,7 +12,7 @@ module.exports = {
     execute(message, arguments) {
         
         let users = [];
-        if(typeof(arguments[0] === typeof([]))) {
+        if(typeof(arguments[0]) === typeof([])) {
             users = arguments.shift();
         } else {
             message.reply("No users were mentioned!");
