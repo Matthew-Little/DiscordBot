@@ -3,7 +3,7 @@ module.exports = {
 
     args: false,
 
-    usage: "[@user]",
+    usage: "[@user(s)]",
 
     guildOnly: true,
 
@@ -17,7 +17,7 @@ module.exports = {
         } else {
             message.channel.send(`${message.author.username}'s avatar: ${message.author.displayAvatarURL({ dynamic: true })}`);
         }
-        
+
         for(let i = 0; i < users.length; ++i) {
             message.channel.send(`${users[i].username}'s avatar: ${users[i].displayAvatarURL({ dynamic: true })}`);
         }

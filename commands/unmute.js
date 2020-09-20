@@ -3,7 +3,7 @@ module.exports = {
 
     args: true,
 
-    usage: "[@user]",
+    usage: "[@user(s)]",
 
     guildOnly: true,
 

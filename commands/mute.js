@@ -3,11 +3,11 @@ module.exports = {
 
     args: true,
 
-    usage: "[@user] [length of mute]",
+    usage: "[@user(s)] [length of mute]",
 
     guildOnly: true,
 
-    description: "This command mutes the tagged user",
+    description: "This command mutes the tagged user(s)",
 
     execute(message, arguments) {
 
