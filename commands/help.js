@@ -2,7 +2,7 @@ const { prefix } = require("../config.json");
 
 module.exports = {
     name: "help",
-
+//
     args: false,
 
     usage: "[Command name>]",
