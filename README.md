@@ -1,3 +1,5 @@
+# A New Discord Bot is in development...
+Please check out the updated version of this project here...[DiceBot](https://github.com/Matthew-Little/DiceBot)
 My first Discord bot!
 The commands folder holds the details for each command
 
