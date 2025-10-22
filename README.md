@@ -1,9 +1,10 @@
 # A New Discord Bot is in development...
 Please check out the updated version of this project here... [DiceBot](https://github.com/Matthew-Little/DiceBot)
-My first Discord bot!
+
+## My first Discord bot!
 The commands folder holds the details for each command
 
-Implemented Commands:
+### Implemented Commands:
 /roll : generates a random number as if you were rolling one or many dice
 
 /reload : reloads a given command so that the bot does not need to be stopped and started when working on a command
